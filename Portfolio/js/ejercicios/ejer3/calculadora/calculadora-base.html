@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculadora</title>
+    <style>
+        body {
+          background-color: #f9f4ef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #5a4a3c;  
+        }
+
+        .calculadora {
+            background: #fffaf5;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(176, 153, 133, 0.3);
+            padding: 32px 24px 24px 24px;
+            display: inline-block;
+            max-width: 320px;
+            width: 100%;
+        }
+
+        .visor {
+           background: #e6dcd3;
+            color: #7b5e45;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            border-radius: 12px;
+            padding: 16px 12px 8px 12px;
+            margin-bottom: 18px;
+            min-width: 220px;
+            text-align: right;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .botones {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.botones button {
+  padding: 14px 0;
+  background-color: #b08968;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.2em;
+  color: white;
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  box-shadow: 0 4px 12px rgba(176,153,133,0.3);
+  transition: background-color 0.3s ease;
+}
+
+.botones button:hover {
+  background-color: #a17655;
+}
+
+@media (max-width: 400px) {
+  .calculadora {
+    max-width: 100%;
+    padding: 20px;
+  }
+  
+  .visor {
+    font-size: 1.8em;
+  }
+  
+  .botones button {
+    font-size: 1em;
+    padding: 12px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .calculadora {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .visor {
+    font-size: 1.8em;
+    padding: 12px;
+  }
+
+  .botones {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .botones button {
+    font-size: 1em;
+    padding: 12px 0;
+  }
+
+  .btn-volver {
+    width: 90%;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="calculadora">
+        <div class="visor">
+            <span class="resultado"></span>
+            <span class="input"></span>
+        </div>
+        <div class="botones">
+            <button>+</button>
+            <button>-</button>
+            <button>*</button>
+            <button>/</button>
+            <button>%</button>
+            <button>√</button>
+
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button>0</button>
+            
+            <button>AC</button>
+            <button>CE</button>
+            <button>=</button>
+            <button>.</button>
+        </div>
+    </div>
+
+    <script>
+        function suma(a, b) {
+            return a + b;
+        }
+
+        function resta(a, b) {
+            return a - b;
+        }
+
+        function multiplicacion(a, b) {
+            return a * b;
+        }
+
+        function division(a, b) {
+            return a / b;
+        }
+
+        function porcentaje(a) {
+            return a / 100;
+        }
+
+        function raiz(a) {
+            return Math.sqrt(a);
+        }
+
+        const botones = document.querySelectorAll('button');
+        const inputSpan = document.querySelector('.input');
+        const resultado = document.querySelector('.resultado');
+
+        let inputActual = '';
+        let operador = null;
+        let a = null;
+        let b = null;
+
+        botones.forEach(boton => {
+            boton.addEventListener('click', () => {
+                const valor = boton.textContent;
+
+                if (!isNaN(valor)) {
+                    // Si es un número
+                    inputActual += valor;
+                    inputSpan.textContent = inputActual;
+                } else if (valor === '.') {
+                    // Permitir solo un punto decimal en el número actual
+                    if (!inputActual.includes('.')) {
+                        if (inputActual === '') {
+                            inputActual = '0.';
+                        } else {
+                            inputActual += '.';
+                        }
+                        inputSpan.textContent = inputActual;
+                    }
+                } else if (valor === 'AC') {
+                    inputActual = '';
+                    operador = null;
+                    a = null;
+                    b = null;
+                    inputSpan.textContent = '';
+                    resultado.textContent = '';
+                } else if (valor === 'CE') {
+                    inputActual = '';
+                    inputSpan.textContent = '';
+                } else if (valor === '=') {
+                    if (operador && a !== null && inputActual !== '') {
+                        b = parseFloat(inputActual);
+                        let res;
+                        switch (operador) {
+                            case '+':
+                                res = suma(a, b);
+                                break;
+                            case '-':
+                                res = resta(a, b);
+                                break;
+                            case '*':
+                                res = multiplicacion(a, b);
+                                break;
+                            case '/':
+                                res = division(a, b);
+                                break;
+                            case '%':
+                                res = porcentaje(a);
+                                break;
+                            case '√':
+                                res = raiz(a);
+                                break;
+                            default:
+                                res = '';
+                        }
+                        resultado.textContent = res;
+                        inputSpan.textContent = ''; // Oculta el input al mostrar el resultado
+                        inputActual = res.toString();
+                        operador = null;
+                        a = null;
+                        b = null;
+                    }
+                } else if (valor === '%') {
+                    if (inputActual !== '') {
+                        a = parseFloat(inputActual);
+                        operador = valor;
+                        let res = porcentaje(a);
+                        resultado.textContent = res;
+                        inputSpan.textContent = ''; // Limpiar input, no mostrar resultado aquí
+                        inputActual = res.toString();
+                        operador = null;
+                        a = null;
+                    }
+                } else if (valor === '√') {
+                    if (inputActual !== '') {
+                        a = parseFloat(inputActual);
+                        operador = valor;
+                        let res = raiz(a);
+                        resultado.textContent = res;
+                        inputSpan.textContent = ''; // Limpiar input, no mostrar resultado aquí
+                        inputActual = res.toString();
+                        operador = null;
+                        a = null;
+                    }
+                } else {
+                    // Operadores + - * /
+                    if (inputActual !== '') {
+                        a = parseFloat(inputActual);
+                        operador = valor;
+                        inputActual = '';
+                        inputSpan.textContent = operador + ' ';
+                    } else if (resultado.textContent !== '') {
+                        // Si hay un resultado previo, usarlo como nuevo 'a' y limpiar resultado
+                        a = parseFloat(resultado.textContent);
+                        operador = valor;
+                        inputActual = '';
+                        resultado.textContent = '';
+                        inputSpan.textContent = a + ' ' + operador + ' ';
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
