@@ -1,0 +1,41 @@
+    body{
+    text-align: center;
+    }
+    nav{
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        font-family: 'Josefin Sans', sans-serif; font: weight 400
+    }
+    td{
+         width: 33%;
+    }
+    a{
+        text-decoration: none;
+            font-size: medium;
+            font-palette:rgb(132, 28, 28);
+    }
+    #inicio{
+        background-color: rgb(193, 193, 145);
+        text-align: center; 
+        font-family: 'Josefin Sans', sans-serif; 
+        font-weight:600; 
+    }
+    h1{
+        background-color: rgb(193, 193, 145);
+        text-align: center; 
+        font-family: 'Josefin Sans', sans-serif; 
+        font-weight:400;  
+    }
+    #presentacion{
+        text-align: center;
+        background-color: beige; 
+        font-family:'Josefin Sans', sans-serif; 
+        font-weight: 500 
+    }
+    b{
+        text-align: center;
+        font-family:'Josefin Sans', sans-serif; 
+        font-weight: 400 ;
+        color: rgb(61, 121, 24);
+    }
